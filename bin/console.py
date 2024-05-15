@@ -18,24 +18,24 @@ def check_methods():
     new = set(uber.method_list().keys())
 
     if new - old:
-        print
-        print 'New Methods:'
-        print
-        print '['
+        print()
+        print('New Methods:')
+        print()
+        print('[')
         for method in new - old:
-            print "    '{}',".format(method)
-        print ']'
+            print("    '{}',".format(method))
+        print(']')
 
     if old - new:
-        print
-        print 'Outdated Methods:'
-        print
-        print '['
+        print()
+        print('Outdated Methods:')
+        print()
+        print('[')
         for method in old - new:
-            print "    '{}',".format(method)
-        print ']'
+            print("    '{}',".format(method))
+        print(']')
 
 
 def update_docs():
     with open(docs_path, 'wb') as f:
-        f.write(uber.documentation().data)
+        f.write(uber.documentation()._data)

@@ -25,6 +25,6 @@ def test_uber_documentation(response):
     response.text = u"Some PDF data."
     response.content = str(response.text)
     uberfile = ubersmith.uber.documentation()
-    assert uberfile.type == 'application/pdf'
+    assert uberfile._type == 'application/pdf'
     assert uberfile.filename == "doc.pdf"
-    assert str(uberfile.data) == response.text
+    assert str(uberfile._data) == response.text

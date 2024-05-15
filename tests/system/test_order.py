@@ -48,7 +48,7 @@ def test_order_get(response):
             },
         },
     }
-    response.json.return_value = resp_json
+    response._json.return_value = resp_json
     response.content = json.dumps(resp_json)
     response.text = text_type(response.content)
     expected = {
@@ -91,7 +91,7 @@ def test_order_list(response):
             },
         },
     }
-    response.json.return_value = resp_json
+    response._json.return_value = resp_json
     response.content = json.dumps(resp_json)
     response.text = text_type(response.content)
     expected = {
@@ -122,7 +122,7 @@ def test_order_queue_list(response):
             },
         },
     }
-    response.json.return_value = resp_json
+    response._json.return_value = resp_json
     response.content = json.dumps(resp_json)
     response.text = text_type(response.content)
     expected = {

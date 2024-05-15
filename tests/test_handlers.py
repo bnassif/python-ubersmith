@@ -36,7 +36,7 @@ class DescribeRequestHandler:
             'error_message': '',
             'data': self.test_data,
         }
-        response.json.return_value = resp_json
+        response._json.return_value = resp_json
         response.content = json.dumps(resp_json)
         response.text = text_type(response.content)
         return response
@@ -54,7 +54,7 @@ class DescribeRequestHandler:
             'error_message': 'We are currently undergoing maintenance, please check back shortly.',
             'error_code': 1,
         }
-        response.json.return_value = resp_json
+        response._json.return_value = resp_json
         response.content = json.dumps(resp_json)
         response.text = text_type(response.content)
         return response
@@ -90,7 +90,7 @@ class DescribeRequestHandler:
     def it_handles_normal_responses(self, response):
         h = RequestHandler('')
         h._send_request = Mock(return_value=response)
-        assert self.test_data == h.process_request('uber.method_list').data
+        assert self.test_data == h.process_request('uber.method_list')._data
 
     def it_handles_updating_token(self, response, token_response):
         returns = [
@@ -102,7 +102,7 @@ class DescribeRequestHandler:
         h._send_request = Mock(side_effect=lambda *args: returns.pop(0))
         with patch('ubersmith.api.time') as time:
             time.sleep = lambda x: None
-            assert self.test_data == h.process_request('uber.method_list').data
+            assert self.test_data == h.process_request('uber.method_list')._data
 
     def it_handles_updating_token_with_charset(self, response,
                                                token_response_with_charset):
@@ -115,7 +115,7 @@ class DescribeRequestHandler:
         h._send_request = Mock(side_effect=lambda *args: returns.pop(0))
         with patch('ubersmith.api.time') as time:
             time.sleep = lambda x: None
-            assert self.test_data == h.process_request('uber.method_list').data
+            assert self.test_data == h.process_request('uber.method_list')._data
 
     def it_raises_updating_token_after_3_tries(self, response, token_response):
         returns = [

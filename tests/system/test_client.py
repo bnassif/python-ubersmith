@@ -44,7 +44,7 @@ def test_get(response):
             u'commission': u'0.00',
         },
     }
-    response.json.return_value = resp_json
+    response._json.return_value = resp_json
     response.content = json.dumps(resp_json)
     response.text = text_type(response.content)
     expected = {
@@ -73,7 +73,7 @@ def test_update(response):
         "error_message": "",
         "data": {},
     }
-    response.json.return_value = resp_json
+    response._json.return_value = resp_json
     response.content = json.dumps(resp_json)
     response.text = text_type(response.content)
     expected = {}
@@ -88,7 +88,7 @@ def test_cc_add(response):
         "error_message": "",
         "data": u'123',
     }
-    response.json.return_value = resp_json
+    response._json.return_value = resp_json
     response.content = json.dumps(resp_json)
     response.text = text_type(response.content)
     expected = 123
@@ -113,7 +113,7 @@ def test_invoice_list(response):
             },
         },
     }
-    response.json.return_value = resp_json
+    response._json.return_value = resp_json
     response.content = json.dumps(resp_json)
     response.text = text_type(response.content)
     expected = {
@@ -137,7 +137,7 @@ def test_invoice_count(response):
         "error_message": "",
         "data": "42",
     }
-    response.json.return_value = resp_json
+    response._json.return_value = resp_json
     response.content = json.dumps(resp_json)
     response.text = text_type(response.content)
     assert int(ubersmith.client.invoice_count(client_id=50)) == 42
@@ -157,7 +157,7 @@ def test_invoice_get(response):
             u'overdue': u'1272400333',
         },
     }
-    response.json.return_value = resp_json
+    response._json.return_value = resp_json
     response.content = json.dumps(resp_json)
     response.text = text_type(response.content)
     expected = {
@@ -179,9 +179,9 @@ def test_invoice_get_pdf(response):
     response.text = u"Some PDF data."
     response.content = str(response.text)
     uberfile = ubersmith.client.invoice_get(invoice_id=60, format="pdf")
-    assert uberfile.type == 'application/pdf'
+    assert uberfile._type == 'application/pdf'
     assert uberfile.filename == "Invoice-60.pdf"
-    assert str(uberfile.data) == response.text
+    assert str(uberfile._data) == response.text
 
 
 def test_invoice_get_pdf_without_disposition(response):
@@ -191,6 +191,6 @@ def test_invoice_get_pdf_without_disposition(response):
     response.text = u"Some PDF data."
     response.content = str(response.text)
     uberfile = ubersmith.client.invoice_get(invoice_id=60, format="pdf")
-    assert uberfile.type == 'application/pdf'
+    assert uberfile._type == 'application/pdf'
     assert uberfile.filename is None
-    assert str(uberfile.data) == response.text
+    assert str(uberfile._data) == response.text

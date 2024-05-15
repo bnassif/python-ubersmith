@@ -61,7 +61,7 @@ def test_connection_list(response):
             }
         },
     }
-    response.json.return_value = resp_json
+    response._json.return_value = resp_json
     response.content = json.dumps(resp_json)
     response.text = text_type(response.content)
     expected = {

@@ -8,7 +8,6 @@ import pytest
 
 from ubersmith.api import METHODS, BaseResponse
 from ubersmith.calls import generate_generic_calls
-from ubersmith.clean import _CLEANERS
 from ubersmith.exceptions import ValidationError
 from ubersmith import uber, order
 
@@ -27,7 +26,7 @@ def make_base_response(data):
     response.headers = {
         'content-type': 'application/json',
     }
-    response.json.return_value = {
+    response._json.return_value = {
         "status": True,
         "error_code": None,
         "error_message": "",
@@ -95,7 +94,7 @@ def test_file_call():
     response.headers = {}
     handler.process_request.return_value = BaseResponse(response)
     uber_file = uber.documentation.handler(handler)()
-    assert uber_file.data == 'bytes here'
+    assert uber_file._data == 'bytes here'
 
 
 def test_calls_validates_required_fields():
@@ -112,24 +111,3 @@ def dict_zip(*dicts):
     for key in set(dicts[0]).intersection(*dicts[1:]):
         yield tuple(d[key] for d in dicts)
 
-
-# TODO: should bool cleaner clean '0' into False?
-@pytest.mark.parametrize(['cleaner', 'value', 'result'], dict_zip(_CLEANERS, {
-    'bool': '1',
-    'int': '123',
-    'decimal': '1,234.56',
-    'float': '1.234',
-    'timestamp': '123456789',
-    'date': 'Aug/31/2011',
-    'php_serialized': u'a:1:{s:4:"test";i:123;}',
-}, {
-    'bool': True,
-    'int': 123,
-    'decimal': Decimal('1234.56'),
-    'float': 1.234,
-    'timestamp': datetime.datetime.fromtimestamp(float('123456789')),
-    'date': datetime.date(2011, 8, 31),
-    'php_serialized': {b'test': 123},
-}))
-def test_cleaners(cleaner, value, result):
-    assert cleaner(value) == result

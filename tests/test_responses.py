@@ -8,7 +8,7 @@ class DescribeDictResponse:
     @pytest.fixture
     def response(self):
         resp = Mock()
-        resp.json.return_value = {'data': {
+        resp._json.return_value = {'data': {
             'key1': 'value1',
             'key2': 'value2',
             'key3': 'value3',
@@ -53,7 +53,7 @@ class DescribeDictResponse:
     def it_strs(self):
         d = {'key': 'value'}
         json_resp = Mock()
-        json_resp.json.return_value = {'data': d}
+        json_resp._json.return_value = {'data': d}
         response = DictResponse(json_resp)
 
         assert str(response) == str(d)
@@ -61,7 +61,7 @@ class DescribeDictResponse:
     def it_reprs(self):
         d = {'key': 'value'}
         json_resp = Mock()
-        json_resp.json.return_value = {'data': d}
+        json_resp._json.return_value = {'data': d}
         response = DictResponse(json_resp)
 
         assert repr(response) == repr(d)
@@ -72,7 +72,7 @@ class DescribeDictResponse:
         @pytest.fixture
         def response(self):
             resp = Mock()
-            return DictResponse.from_cleaned(resp, {'data': {
+            return DictResponse._from_cleaned(resp, {'data': {
                 'key1': 'value1',
                 'key2': 'value2',
                 'key3': 'value3',
@@ -107,7 +107,7 @@ class DescribeIntResponse:
     @pytest.fixture
     def response(self):
         resp = Mock()
-        resp.json.return_value = {'data': 12}
+        resp._json.return_value = {'data': 12}
         return IntResponse(resp)
 
     def it_strs(self, response):
@@ -162,21 +162,21 @@ class DescribeIntResponse:
 
     def it_abs(self, response):
         resp = Mock()
-        resp.json.return_value = {'data': -12}
+        resp._json.return_value = {'data': -12}
         response2 = IntResponse(resp)
         assert abs(response) == 12
         assert abs(response2) == 12
 
     def it_negates(self, response):
         resp = Mock()
-        resp.json.return_value = {'data': -12}
+        resp._json.return_value = {'data': -12}
         response2 = IntResponse(resp)
         assert -response == -12
         assert -response2 == 12
 
     def it_positives(self, response):
         resp = Mock()
-        resp.json.return_value = {'data': -12}
+        resp._json.return_value = {'data': -12}
         response2 = IntResponse(resp)
         assert +response == 12
         assert +response2 == -12

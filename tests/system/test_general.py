@@ -31,7 +31,7 @@ def test_responses_can_getitem(response):
             }
         },
     }
-    response.json.return_value = resp_json
+    response._json.return_value = resp_json
     response.content = json.dumps(resp_json)
     response.text = text_type(response.content)
     result = ubersmith.uber.method_list()
@@ -48,7 +48,7 @@ def test_responses_can_be_turned_into_dicts(response):
             "foo": "bar",
         },
     }
-    response.json.return_value = resp_json
+    response._json.return_value = resp_json
     response.content = json.dumps(resp_json)
     response.text = text_type(response.content)
     expected = {
